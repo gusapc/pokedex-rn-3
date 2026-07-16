@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+
 export default StyleSheet.create({
     container: { flex: 1, backgroundColor: '#101418' },
     title: { color: '#FFFFFF', fontSize: 22, fontWeight: 'bold' },
@@ -14,4 +15,17 @@ export default StyleSheet.create({
     btnText: { color: '#8ecafc', fontFamily: 'Courier', fontSize: 13 },
     meta: { color: '#f5c93f', fontFamily: 'Courier', fontSize: 12, marginVertical: 8 },
     json: { color: '#9fe8a9', fontFamily: 'Courier', fontSize: 11, lineHeight: 16 },
+    panelTitle: { marginTop: 24, marginBottom: 8 },
+    themeCard: {
+        borderRadius: 12,
+        padding: 16,
+        gap: 8,
+        marginBottom: 24,
+    },
+    themeChip: {
+        alignSelf: 'flex-start',
+        borderRadius: 14,
+        paddingHorizontal: 12,
+        paddingVertical: 4,
+    },
 });
