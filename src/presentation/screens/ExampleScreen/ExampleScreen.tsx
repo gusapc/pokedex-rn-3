@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Region } from '../../../domain/entities/Region';
-import { toAppError } from '../../../core/errors/AppError';
+import { AppErrorCode, createAppError, toAppError } from '../../../core/errors/AppError';
 import { getContainer } from '../../../core/di/container';
 import { ThemeName } from '../../../core/theme/palettes';
 import { Language } from '../../../core/i18n/strings';
@@ -14,6 +14,10 @@ import PrimaryBtn from '../../components/PrimaryBtn/PrimaryBtn';
 import PokeItem from '../../components/PokeItem/PokeItem';
 import StatsItem from '../../components/StatsItem/StatsItem';
 import Divider from '../../components/Divider/Divider';
+import SkeletonRow from '../../components/SkeletonRow/SkeletonRow';
+import ErrorView from '../../components/ErrorView/ErrorView';
+import EmptyView from '../../components/EmptyView/EmptyView';
+import RegionChips from '../../components/RegionChips/RegionChips';
 import styles from './ExampleScreenStyle';
 
 const MAX_PAYLOAD_CHARS = 4000;
@@ -42,6 +46,7 @@ export default function ExampleScreen() {
     const { language, strings, setLanguage } = useStrings();
     const [isLoading, setIsLoading] = useState(false);
     const [result, setResult] = useState<LabResult | null>(null);
+    const [demoRegion, setDemoRegion] = useState<Region>(Region.National);
 
     const toggleTheme = () =>
         setThemeName(themeName === ThemeName.Pokeball ? ThemeName.Ultraball : ThemeName.Pokeball);
@@ -73,8 +78,8 @@ export default function ExampleScreen() {
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: insets.top + 8, padding: 16 }}>
             <Text style={styles.title}>Example</Text>
-            <Text style={styles.subtitle}>pokedex-rn-3 pruebas de api y componentes</Text>
-            <Text style={[styles.title, styles.panelTitle]}>Componentes</Text>
+            <Text style={styles.subtitle}>pokedex-rn-3  pruebas de api y componentes</Text>
+            <Text style={[styles.title, styles.panelTitle]}>Galería de componentes</Text>
             <View style={[styles.gallery, { backgroundColor: palette.background }]}>
                 <TextComponent text="TextComponent huge / bold" size="huge" weight="bold" />
                 <TextComponent text="subtitle en textMuted" size="subtitle" color="textMuted" />
@@ -89,8 +94,16 @@ export default function ExampleScreen() {
                 <Divider />
                 <StatsItem name="attack" value={120} />
                 <StatsItem name="hp" value={45} />
+                <Divider />
+                <SkeletonRow />
+                <RegionChips selected={demoRegion} onSelect={setDemoRegion} />
+                <View style={styles.stateDemo}>
+                    <ErrorView error={createAppError(AppErrorCode.Network)} onRetry={() => { }} />
+                </View>
+                <View style={styles.stateDemo}>
+                    <EmptyView message="EmptyView de demostración" />
+                </View>
             </View>
-
 
             <Text style={[styles.title, styles.panelTitle]}>Ajustes</Text>
             <Pressable style={styles.btn} onPress={toggleTheme}>
@@ -126,8 +139,6 @@ export default function ExampleScreen() {
                     </Text>
                 </View>
             )}
-
-
         </ScrollView>
     );
 }

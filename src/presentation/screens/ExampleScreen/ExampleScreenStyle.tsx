@@ -33,4 +33,5 @@ export default StyleSheet.create({
         gap: 10,
         marginBottom: 40,
     },
+    stateDemo: { height: 200 },
 });
