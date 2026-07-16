@@ -8,4 +8,3 @@ export interface PokemonPage {
     items: Pokemon[];
     nextOffset: number | null;
 }
-
