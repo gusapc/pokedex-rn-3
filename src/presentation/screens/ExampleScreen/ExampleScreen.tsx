@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { toAppError } from 'pokedex-rn-3/src/core/errors/AppError';
 import { httpGet } from 'pokedex-rn-3/src/data/api/HttpClient';
 import styles from './ExampleScreenStyle';
+import { getContainer } from 'pokedex-rn-3/src/core/di/container';
 
 const MAX_PAYLOAD_CHARS = 4000;
 
@@ -19,14 +20,9 @@ interface LabProbe {
 }
 
 const probes: LabProbe[] = [
-    {
-        label: 'GET /pokemon?limit=20',
-        request: () => httpGet<unknown>('https://pokeapi.co/api/v2/pokemon?limit=20&offset=0'),
-    },
-    {
-        label: 'GET /pokemon/25',
-        request: () => httpGet<unknown>('https://pokeapi.co/api/v2/pokemon/25'),
-    },
+    { label: 'getPokemonPage(0)', request: () => getContainer().getPokemonPage(0) },
+    { label: 'getPokemonPage(20)', request: () => getContainer().getPokemonPage(20) },
+    { label: 'GET /pokemon/25 (crudo)', request: () => httpGet<unknown>('https://pokeapi.co/api/v2/pokemon/25') },
 ];
 
 export default function ExampleScreen() {
