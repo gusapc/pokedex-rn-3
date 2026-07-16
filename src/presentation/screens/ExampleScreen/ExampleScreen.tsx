@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { toAppError } from 'pokedex-rn-3/src/core/errors/AppError';
-import { httpGet } from 'pokedex-rn-3/src/data/api/HttpClient';
+import { Region } from '../../../domain/entities/Region';
+import { toAppError } from '../../../core/errors/AppError';
+import { getContainer } from '../../../core/di/container';
 import styles from './ExampleScreenStyle';
-import { getContainer } from 'pokedex-rn-3/src/core/di/container';
 
 const MAX_PAYLOAD_CHARS = 4000;
 
@@ -22,7 +22,8 @@ interface LabProbe {
 const probes: LabProbe[] = [
     { label: 'getPokemonPage(0)', request: () => getContainer().getPokemonPage(0) },
     { label: 'getPokemonPage(20)', request: () => getContainer().getPokemonPage(20) },
-    { label: 'GET /pokemon/25 (crudo)', request: () => httpGet<unknown>('https://pokeapi.co/api/v2/pokemon/25') },
+    { label: 'getPokemonDetail(25)', request: () => getContainer().getPokemonDetail('25') },
+    { label: 'getPokemonByRegion(Kanto)', request: () => getContainer().getPokemonByRegion(Region.Kanto) },
 ];
 
 export default function ExampleScreen() {
@@ -54,7 +55,7 @@ export default function ExampleScreen() {
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: insets.top + 8, padding: 16 }}>
-            <Text style={styles.title}>Example</Text>
+            <Text style={styles.title}>Example / laboratorio</Text>
             <Text style={styles.subtitle}>pokedex-rn-3 · pruebas de api y componentes</Text>
             {probes.map((item) => (
                 <Pressable key={item.label} style={styles.btn} onPress={() => probe(item)}>

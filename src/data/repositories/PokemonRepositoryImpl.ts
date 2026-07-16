@@ -1,8 +1,9 @@
-import { toAppError } from 'pokedex-rn-3/src/core/errors/AppError';
-import { PokemonRepository } from 'pokedex-rn-3/src/domain/repositories/PokemonRepository';
-import { fetchPokemonPage } from 'pokedex-rn-3/src/data/api/PokeApiDataSource';
-import { readFromStore, writeToStore } from 'pokedex-rn-3/src/data/local/LocalStore';
-import { toPokemon } from 'pokedex-rn-3/src/data/dto/PokemonMappers';
+import { AppErrorCode, createAppError, toAppError } from '../../core/errors/AppError';
+import { REGION_POKEDEX_ID } from '../../domain/entities/Region';
+import { PokemonRepository } from '../../domain/repositories/PokemonRepository';
+import { fetchPokedex, fetchPokemon, fetchPokemonPage } from '../api/PokeApiDataSource';
+import { readFromStore, writeToStore } from '../local/LocalStore';
+import { toPokemon, toPokemonDetail } from '../dto/PokemonMappers';
 
 interface Cached<T> {
     savedAt: number;
@@ -12,6 +13,8 @@ interface Cached<T> {
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 export const createPokemonRepository = (): PokemonRepository => {
+    // Cache-first con TTL y fallback a caché vencida si la red falla (offline parcial).
+    // Privada por closure: la política de caché no se filtra fuera del repositorio.
     const cacheFirst = async <T>(key: string, fetcher: () => Promise<T>): Promise<T> => {
         const cached = await readFromStore<Cached<T>>(key);
         const isFresh = cached !== null && Date.now() - cached.savedAt < DAY_MS;
@@ -34,5 +37,17 @@ export const createPokemonRepository = (): PokemonRepository => {
                 const nextOffset = offset + limit < dto.count ? offset + limit : null;
                 return { items, nextOffset };
             }),
+
+        getDetail: (id) =>
+            cacheFirst(`@pokedex/detail/${id}`, async () => toPokemonDetail(await fetchPokemon(id))),
+
+        getByRegion: async (region) => {
+            const pokedexId = REGION_POKEDEX_ID[region];
+            if (pokedexId === null) throw createAppError(AppErrorCode.Validation, 'region_sin_pokedex');
+            return cacheFirst(`@pokedex/region/${region}`, async () => {
+                const dto = await fetchPokedex(pokedexId);
+                return dto.pokemon_entries.map((entry) => toPokemon(entry.pokemon_species));
+            });
+        },
     };
 };

@@ -1,5 +1,11 @@
-import { Pokemon } from 'pokedex-rn-3/src/domain/entities/Pokemon';
-import { PokeListItemDTO } from 'pokedex-rn-3/src/data/dto/PokemonDTO';
+import { Pokemon } from '../../domain/entities/Pokemon';
+import {
+    PokemonAbility,
+    PokemonDetail,
+    PokemonStat,
+    PokemonType,
+} from '../../domain/entities/PokemonDetail';
+import { PokeListItemDTO, PokemonResponseDTO } from './PokemonDTO';
 
 export const SPRITE_URL = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon';
 
@@ -19,5 +25,30 @@ export const toPokemon = (dto: PokeListItemDTO): Pokemon => {
         id,
         name: capitalize(dto.name),
         imageUrl: spriteUrlFor(id),
+    };
+};
+
+const toPokemonType = (name: string): PokemonType =>
+    (Object.values(PokemonType) as string[]).includes(name) ? (name as PokemonType) : PokemonType.Unknown;
+
+export const toPokemonDetail = (dto: PokemonResponseDTO): PokemonDetail => {
+    const stats: PokemonStat[] = dto.stats.map((item) => ({
+        name: item.stat.name,
+        value: item.base_stat,
+    }));
+    const abilities: PokemonAbility[] = dto.abilities.map((item) => ({
+        name: capitalize(item.ability.name),
+        isHidden: item.is_hidden,
+    }));
+    return {
+        id: String(dto.id),
+        name: capitalize(dto.name),
+        imageUrl: spriteUrlFor(String(dto.id)),
+        types: dto.types.sort((a, b) => a.slot - b.slot).map((item) => toPokemonType(item.type.name)),
+        abilities,
+        stats,
+        weightKg: dto.weight / 10,
+        heightM: dto.height / 10,
+        baseExperience: dto.base_experience ?? 0,
     };
 };

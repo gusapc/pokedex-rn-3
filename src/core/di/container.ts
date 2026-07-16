@@ -1,8 +1,12 @@
-import { createPokemonRepository } from 'pokedex-rn-3/src/data/repositories/PokemonRepositoryImpl';
-import { GetPokemonPage, makeGetPokemonPage } from 'pokedex-rn-3/src/domain/usecases/GetPokemonPage';
+import { createPokemonRepository } from '../../data/repositories/PokemonRepositoryImpl';
+import { GetPokemonPage, makeGetPokemonPage } from '../../domain/usecases/GetPokemonPage';
+import { GetPokemonDetail, makeGetPokemonDetail } from '../../domain/usecases/GetPokemonDetail';
+import { GetPokemonByRegion, makeGetPokemonByRegion } from '../../domain/usecases/GetPokemonByRegion';
 
 export interface AppContainer {
     getPokemonPage: GetPokemonPage;
+    getPokemonDetail: GetPokemonDetail;
+    getPokemonByRegion: GetPokemonByRegion;
 }
 
 const createAppContainer = (): AppContainer => {
@@ -10,6 +14,8 @@ const createAppContainer = (): AppContainer => {
 
     return {
         getPokemonPage: makeGetPokemonPage(pokemonRepository),
+        getPokemonDetail: makeGetPokemonDetail(pokemonRepository),
+        getPokemonByRegion: makeGetPokemonByRegion(pokemonRepository),
     };
 };
 

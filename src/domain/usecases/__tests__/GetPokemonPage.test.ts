@@ -1,10 +1,10 @@
-/// <reference types="jest" />
-
-import { makeGetPokemonPage, PAGE_SIZE } from 'pokedex-rn-3/src/domain/usecases/GetPokemonPage';
-import { PokemonRepository } from 'pokedex-rn-3/src/domain/repositories/PokemonRepository';
+import { makeGetPokemonPage, PAGE_SIZE } from '../GetPokemonPage';
+import { PokemonRepository } from '../../repositories/PokemonRepository';
 
 const repositoryMock: jest.Mocked<PokemonRepository> = {
     getPage: jest.fn(),
+    getDetail: jest.fn(),
+    getByRegion: jest.fn(),
 };
 
 describe('getPokemonPage', () => {
