@@ -27,7 +27,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function Router() {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Example" screenOptions={{ headerShown: false }}>
+            <Stack.Navigator initialRouteName="MainTabs" screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="MainTabs" component={MainTabs} />
                 <Stack.Screen name="PokemonDetails" component={PokemonDetailsScreen} />
                 <Stack.Screen name="Example" component={ExampleScreen} />
