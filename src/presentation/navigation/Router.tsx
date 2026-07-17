@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MainTabsParamList, RootStackParamList } from './types';
+import BottomBar from '../components/BottomBar/BottomBar';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import FavoritesScreen from '../screens/FavoritesScreen/FavoritesScreen';
 import SettingsScreen from '../screens/SettingsScreen/SettingsScreen';
@@ -13,7 +14,7 @@ const Tabs = createBottomTabNavigator<MainTabsParamList>();
 
 function MainTabs() {
     return (
-        <Tabs.Navigator screenOptions={{ headerShown: false }}>
+        <Tabs.Navigator screenOptions={{ headerShown: false }} tabBar={(props) => <BottomBar {...props} />}>
             <Tabs.Screen name="HomeScreen" component={HomeScreen} />
             <Tabs.Screen name="FavoritesScreen" component={FavoritesScreen} />
             <Tabs.Screen name="SettingsScreen" component={SettingsScreen} />
