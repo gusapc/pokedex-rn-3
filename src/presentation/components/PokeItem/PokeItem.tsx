@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import { Image, View } from 'react-native';
-import Feather from '@expo/vector-icons/Feather';
+import { Feather } from '@expo/vector-icons';
 import TextComponent from '../TextComponent/TextComponent';
 import { useTheme } from '../../../core/theme/useTheme';
 import styles from './PokeItemStyle';

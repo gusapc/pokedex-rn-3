@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import Feather from '@expo/vector-icons/Feather';
+import { Feather } from '@expo/vector-icons';
 import { AppError } from '../../../core/errors/AppError';
 import TextComponent from '../TextComponent/TextComponent';
 import PrimaryBtn from '../PrimaryBtn/PrimaryBtn';

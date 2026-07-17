@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Animated, Pressable, View } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Feather from '@expo/vector-icons/Feather';
+import { Feather } from '@expo/vector-icons';
 import { useTheme } from '../../../core/theme/useTheme';
 import { useStrings } from '../../../core/i18n/useStrings';
 import styles from './BottomBarStyle';
