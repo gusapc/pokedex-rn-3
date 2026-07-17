@@ -1,10 +1,11 @@
 import React from 'react';
 import { ActivityIndicator, Image, ScrollView, TouchableOpacity, View } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { Feather, Ionicons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RootStackParamList } from '../../navigation/types';
 import { usePokemonDetail } from '../../hooks/usePokemonDetail';
+import { useFavorites, useToggleFavorite } from '../../hooks/useFavorites';
 import { useTheme } from '../../../core/theme/useTheme';
 import { useStrings } from '../../../core/i18n/useStrings';
 import TextComponent from '../../components/TextComponent/TextComponent';
@@ -21,15 +22,31 @@ export default function PokemonDetailsScreen({ navigation, route }: Props) {
     const { strings } = useStrings();
     const insets = useSafeAreaInsets();
     const { detail, isLoading, error, retry } = usePokemonDetail(id);
+    const { favorites } = useFavorites();
+    const toggleFavorite = useToggleFavorite();
+    const isFavorite = favorites.some((pokemon) => pokemon.id === id);
+
+    const onToggleFavorite = () => {
+        if (!detail || toggleFavorite.isPending) return;
+        toggleFavorite.mutate({ id, name, imageUrl: detail.imageUrl });
+    };
 
     return (
         <View style={[styles.container, { backgroundColor: palette.background }]}>
             <View style={[styles.header, { backgroundColor: palette.primary, paddingTop: insets.top }]}>
-                <TouchableOpacity onPress={() => navigation.goBack()} accessibilityRole="button" accessibilityLabel="back">
+                <TouchableOpacity onPress={() => navigation.goBack()} accessibilityRole="button" accessibilityLabel="regresar">
                     <Feather name="chevron-left" size={32} color={palette.onPrimary} />
                 </TouchableOpacity>
                 <TextComponent text={name} size="title" weight="bold" color="onPrimary" />
-                <View style={styles.headerSpacer} />
+                <TouchableOpacity
+                    onPress={onToggleFavorite}
+                    disabled={!detail}
+                    accessibilityRole="checkbox"
+                    accessibilityState={{ checked: isFavorite }}
+                    accessibilityLabel="favorito"
+                >
+                    <Ionicons name={isFavorite ? 'star' : 'star-outline'} size={26} color={palette.onPrimary} />
+                </TouchableOpacity>
             </View>
 
             {isLoading && (

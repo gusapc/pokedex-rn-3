@@ -41,6 +41,7 @@ const probes: LabProbe[] = [
     { label: 'getPokemonPage(20)', request: () => getContainer().getPokemonPage(20) },
     { label: 'getPokemonDetail(25)', request: () => getContainer().getPokemonDetail('25') },
     { label: 'getPokemonByRegion(Kanto)', request: () => getContainer().getPokemonByRegion(Region.Kanto) },
+    { label: 'getFavorites()', request: () => getContainer().getFavorites() },
 ];
 
 export default function ExampleScreen() {
@@ -81,14 +82,31 @@ export default function ExampleScreen() {
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: insets.top + 8, padding: 16 }}>
-            <Text style={styles.title}>Example</Text>
-            <Text style={styles.subtitle}>pokedex-rn-3  pruebas de api y componentes</Text>
-
+            <Text style={styles.title}>Example </Text>
+            <Text style={styles.subtitle}>pokedex-rn-3 pruebas de api y componentes</Text>
             <Pressable style={styles.btn} onPress={() => navigation.navigate('MainTabs')}>
-                <Text style={styles.btnText}>abrir MainTabs</Text>
+                <Text style={styles.btnText}>⌂ abrir MainTabs (la app real)</Text>
             </Pressable>
 
-            <Text style={[styles.title, styles.panelTitle]}>Componentes</Text>
+
+            <Text style={[styles.title, styles.panelTitle]}>Ajustes (demo del store)</Text>
+            <Pressable style={styles.btn} onPress={toggleTheme}>
+                <Text style={styles.btnText}>◐ tema: {strings.settings.themes[themeName]}</Text>
+            </Pressable>
+            <Pressable style={styles.btn} onPress={toggleLanguage}>
+                <Text style={styles.btnText}>⇄ idioma: {strings.settings.languages[language]}</Text>
+            </Pressable>
+            <View style={[styles.themeCard, { backgroundColor: palette.background }]}>
+                <Text style={{ color: palette.text, fontWeight: 'bold' }}>
+                    {strings.tabs.home} · {strings.tabs.favorites} · {strings.tabs.settings}
+                </Text>
+                <Text style={{ color: palette.textMuted, fontSize: 12 }}>{strings.favorites.empty}</Text>
+                <View style={[styles.themeChip, { backgroundColor: palette.primary }]}>
+                    <Text style={{ color: palette.onPrimary, fontWeight: 'bold', fontSize: 12 }}>primary / onPrimary</Text>
+                </View>
+            </View>
+
+            <Text style={[styles.title, styles.panelTitle]}>Galería de componentes</Text>
             <View style={[styles.gallery, { backgroundColor: palette.background }]}>
                 <TextComponent text="TextComponent huge / bold" size="huge" weight="bold" />
                 <TextComponent text="subtitle en textMuted" size="subtitle" color="textMuted" />
@@ -114,22 +132,6 @@ export default function ExampleScreen() {
                 </View>
             </View>
 
-            <Text style={[styles.title, styles.panelTitle]}>Ajustes (demo del store)</Text>
-            <Pressable style={styles.btn} onPress={toggleTheme}>
-                <Text style={styles.btnText}>◐ tema: {strings.settings.themes[themeName]}</Text>
-            </Pressable>
-            <Pressable style={styles.btn} onPress={toggleLanguage}>
-                <Text style={styles.btnText}>⇄ idioma: {strings.settings.languages[language]}</Text>
-            </Pressable>
-            <View style={[styles.themeCard, { backgroundColor: palette.background }]}>
-                <Text style={{ color: palette.text, fontWeight: 'bold' }}>
-                    {strings.tabs.home} · {strings.tabs.favorites} · {strings.tabs.settings}
-                </Text>
-                <Text style={{ color: palette.textMuted, fontSize: 12 }}>{strings.favorites.empty}</Text>
-                <View style={[styles.themeChip, { backgroundColor: palette.primary }]}>
-                    <Text style={{ color: palette.onPrimary, fontWeight: 'bold', fontSize: 12 }}>primary / onPrimary</Text>
-                </View>
-            </View>
             {probes.map((item) => (
                 <Pressable key={item.label} style={styles.btn} onPress={() => probe(item)}>
                     <Text style={styles.btnText}>▶ {item.label}</Text>
@@ -146,8 +148,6 @@ export default function ExampleScreen() {
                     </Text>
                 </View>
             )}
-
-
         </ScrollView>
     );
 }
