@@ -7,6 +7,8 @@ export enum Region {
     Unova = 'unova',
     Kalos = 'kalos',
     Alola = 'alola',
+    Galar = 'galar',
+    Paldea = 'paldea',
 }
 
 // Id del pokedex por región en PokéAPI (https://pokeapi.co/api/v2/pokedex)
@@ -19,4 +21,6 @@ export const REGION_POKEDEX_ID: Record<Region, number | null> = {
     [Region.Unova]: 8,
     [Region.Kalos]: 12,
     [Region.Alola]: 16,
+    [Region.Galar]: 27,
+    [Region.Paldea]: 31,
 };

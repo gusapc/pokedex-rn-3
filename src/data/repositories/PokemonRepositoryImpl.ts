@@ -13,8 +13,6 @@ interface Cached<T> {
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 export const createPokemonRepository = (): PokemonRepository => {
-    // Cache-first con TTL y fallback a caché vencida si la red falla (offline parcial).
-    // Privada por closure: la política de caché no se filtra fuera del repositorio.
     const cacheFirst = async <T>(key: string, fetcher: () => Promise<T>): Promise<T> => {
         const cached = await readFromStore<Cached<T>>(key);
         const isFresh = cached !== null && Date.now() - cached.savedAt < DAY_MS;

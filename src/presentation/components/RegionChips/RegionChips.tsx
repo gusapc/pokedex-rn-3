@@ -19,6 +19,7 @@ export default function RegionChips({ selected, onSelect }: RegionChipsProps) {
         <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
+            style={styles.scroll}
             contentContainerStyle={styles.container}
             accessibilityRole="tablist"
         >
@@ -40,9 +41,10 @@ export default function RegionChips({ selected, onSelect }: RegionChipsProps) {
                     >
                         <TextComponent
                             text={strings.regions[region]}
-                            size="label"
+                            size="body"
                             weight="bold"
                             color={isSelected ? 'onPrimary' : 'textMuted'}
+                            numberOfLines={1}
                         />
                     </TouchableOpacity>
                 );
