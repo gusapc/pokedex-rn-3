@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextComponent mantiene el snapshot con variantes 1`] = `
+<Text
+  allowFontScaling={true}
+  style={
+    {
+      "color": "#364350",
+      "fontSize": 22,
+      "fontWeight": "bold",
+      "textAlign": "center",
+    }
+  }
+>
+  Snapshot
+</Text>
+`;

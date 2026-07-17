@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigation/types';
 import { Region } from '../../../domain/entities/Region';
 import { AppErrorCode, createAppError, toAppError } from '../../../core/errors/AppError';
 import { getContainer } from '../../../core/di/container';
@@ -41,6 +44,7 @@ const probes: LabProbe[] = [
 ];
 
 export default function ExampleScreen() {
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     const insets = useSafeAreaInsets();
     const { themeName, palette, setThemeName } = useTheme();
     const { language, strings, setLanguage } = useStrings();
@@ -79,7 +83,12 @@ export default function ExampleScreen() {
         <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: insets.top + 8, padding: 16 }}>
             <Text style={styles.title}>Example</Text>
             <Text style={styles.subtitle}>pokedex-rn-3  pruebas de api y componentes</Text>
-            <Text style={[styles.title, styles.panelTitle]}>Galería de componentes</Text>
+
+            <Pressable style={styles.btn} onPress={() => navigation.navigate('MainTabs')}>
+                <Text style={styles.btnText}>abrir MainTabs</Text>
+            </Pressable>
+
+            <Text style={[styles.title, styles.panelTitle]}>Componentes</Text>
             <View style={[styles.gallery, { backgroundColor: palette.background }]}>
                 <TextComponent text="TextComponent huge / bold" size="huge" weight="bold" />
                 <TextComponent text="subtitle en textMuted" size="subtitle" color="textMuted" />
@@ -105,7 +114,7 @@ export default function ExampleScreen() {
                 </View>
             </View>
 
-            <Text style={[styles.title, styles.panelTitle]}>Ajustes</Text>
+            <Text style={[styles.title, styles.panelTitle]}>Ajustes (demo del store)</Text>
             <Pressable style={styles.btn} onPress={toggleTheme}>
                 <Text style={styles.btnText}>◐ tema: {strings.settings.themes[themeName]}</Text>
             </Pressable>
@@ -121,8 +130,6 @@ export default function ExampleScreen() {
                     <Text style={{ color: palette.onPrimary, fontWeight: 'bold', fontSize: 12 }}>primary / onPrimary</Text>
                 </View>
             </View>
-
-
             {probes.map((item) => (
                 <Pressable key={item.label} style={styles.btn} onPress={() => probe(item)}>
                     <Text style={styles.btnText}>▶ {item.label}</Text>
@@ -139,6 +146,8 @@ export default function ExampleScreen() {
                     </Text>
                 </View>
             )}
+
+
         </ScrollView>
     );
 }
